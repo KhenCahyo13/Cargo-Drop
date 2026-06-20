@@ -6,10 +6,11 @@ public class Plane : MonoBehaviour
     [SerializeField] private GameObject packagePrefab;
 
     private Rigidbody2D planeRigidbody2D;
-    private int remainingPackage = 5;
+    private int remainingPackage;
 
     private void Awake()
     {
+        remainingPackage = 5;
         planeRigidbody2D = GetComponent<Rigidbody2D>();
     }
 
@@ -44,7 +45,12 @@ public class Plane : MonoBehaviour
 
     private void DropPackage()
     {
-        Instantiate(packagePrefab, transform.position, Quaternion.identity);
+        Vector3 spawnPosition = transform.position + new Vector3(0, -1f, 0);
+        GameObject newPackage = Instantiate(packagePrefab, spawnPosition, Quaternion.identity);
+
+        Rigidbody2D packageRigidbody2D = newPackage.GetComponent<Rigidbody2D>();
+        packageRigidbody2D.linearVelocity = planeRigidbody2D.linearVelocity;
+
         remainingPackage--;
     }
 }
