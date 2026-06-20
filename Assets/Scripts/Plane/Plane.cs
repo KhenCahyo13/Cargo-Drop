@@ -3,11 +3,22 @@ using UnityEngine.InputSystem;
 
 public class Plane : MonoBehaviour
 {
+    [SerializeField] private GameObject packagePrefab;
+
     private Rigidbody2D planeRigidbody2D;
+    private int remainingPackage = 5;
 
     private void Awake()
     {
         planeRigidbody2D = GetComponent<Rigidbody2D>();
+    }
+
+    private void Update()
+    {
+        if (Keyboard.current.spaceKey.wasPressedThisFrame && remainingPackage > 0)
+        {
+            DropPackage();
+        }
     }
 
     private void FixedUpdate()
@@ -29,5 +40,11 @@ public class Plane : MonoBehaviour
         {
             planeRigidbody2D.AddForce(Vector2.right * moveSpeed);
         }
+    }
+
+    private void DropPackage()
+    {
+        Instantiate(packagePrefab, transform.position, Quaternion.identity);
+        remainingPackage--;
     }
 }
